@@ -1,0 +1,97 @@
+apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
+
+def ext = rootProject.ext
+
+android {
+    
+    def app = ext.android
+
+    compileSdkVersion app.compileSdkVersion
+    buildToolsVersion app.buildToolsVersion
+
+    defaultConfig {
+
+        applicationId app.applicationId
+        minSdkVersion app.minSdkVersion
+        targetSdkVersion app.targetSdkVersion
+        versionCode app.versionCode
+        versionName app.versionName
+
+        vectorDrawables.useSupportLibrary = true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        debug {
+            buildConfigField("boolean", "LOG_DEBUG", "true")
+        }
+
+        release {
+            buildConfigField("boolean", "LOG_DEBUG", "false")
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    def dpd = ext.dependencies
+
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    // support
+    compile dpd["support-v4"]
+    compile dpd["appcompat-v7"]
+    compile dpd["design"]
+    compile dpd["recyclerview"]
+    compile dpd["cardview"]
+    // rx
+    compile dpd["rxandroid2"]
+    compile dpd["rxjava2"]
+    compile dpd["rxbinding2"]
+    compile dpd["rxbinding2-support-v4"]
+    compile dpd["rxbinding2-appcompat-v7"]
+    compile dpd["rxbinding2-design"]
+    compile dpd["rxbinding2-recyclerview-v7"]
+    // ormlite
+    compile dpd["ormlite-android"]
+    // stream
+    compile dpd["stream"]
+    // retrofit2
+    compile dpd["retrofit2"]
+    compile dpd["retrofit2-converter-gson"]
+    compile dpd["retrofit2-adapter-rxjava2"]
+    // gson
+    compile dpd["gson"]
+    compile dpd["okhttp3-logging-interceptor"]
+    // stetho
+    compile dpd["stetho"]
+    compile dpd["stetho-okhttp3"]
+    // butterknife
+    compile dpd["butterknife"]
+    annotationProcessor dpd["butterknife-compiler"]
+    // dagger
+    compile dpd["dagger"]
+    annotationProcessor dpd["dagger-compiler"]
+    // glide
+    compile dpd["glide"]
+    compile dpd["glide-okhttp3"]
+
+    // ?
+    compile 'org.glassfish:javax.annotation:10.0-b28'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    testCompile 'junit:junit:4.12'
+}
